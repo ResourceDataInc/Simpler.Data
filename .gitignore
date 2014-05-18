@@ -32,3 +32,5 @@ deploy/*
 Gemfile.lock
 output/
 .DS_Store
+*.userprefs
+
