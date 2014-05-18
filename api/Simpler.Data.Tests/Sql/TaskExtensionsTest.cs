@@ -1,19 +1,10 @@
 using NUnit.Framework;
 using Simpler;
-using Simpler.Data;
-
-namespace Simpler.Data.Tests.Tasks
-{
-    public class SelectEverything : Task
-    {
-        public override void Execute() { }
-    }
-}
+using Simpler.Data.Tests.Tasks;
+using Simpler.Data.Sql;
 
 namespace Simpler.Data.Tests
 {
-    using Simpler.Data.Tests.Tasks;
-
     [TestFixture]
     public class TaskExtensionTest
     {

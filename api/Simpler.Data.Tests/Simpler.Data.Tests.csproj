@@ -43,7 +43,8 @@
     <Compile Include="Tasks\BuildTypedTest.cs" />
     <Compile Include="Tasks\FindParameters.cs" />
     <Compile Include="ResultsTest.cs" />
-    <Compile Include="TaskExtensionsTest.cs" />
+    <Compile Include="Sql\TaskExtensionsTest.cs" />
+    <Compile Include="Tasks\SelectEverything.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

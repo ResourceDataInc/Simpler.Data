@@ -41,7 +41,7 @@
     <Compile Include="Tasks\FindParameters.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="Results.cs" />
-    <Compile Include="TaskExtensions.cs" />
+    <Compile Include="Sql\TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -63,5 +63,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sql\" />
   </ItemGroup>
 </Project>

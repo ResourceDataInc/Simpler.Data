@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Simpler.Data
+namespace Simpler.Data.Sql
 {
     public static class TaskExtensions
     {
