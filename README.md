@@ -1,178 +1,35 @@
-#Simpler
+# Simpler.Data
 
-You probably won't like Simpler. If you enjoy spending your time maintaining complex domain models, configuring ORMs, interfacing with DI/IOC frameworks, and regenerating code, then you will probably hate Simpler. Simpler's primary goal is help developers create quick, simple solutions while writing the least amount of code possible. Every piece of code in an application should have a clearly visible business purpose - the rest is just noise.
+Simpler.Data is a simpler micro-ORM that provides functionality for interacting with relational databases using SQL.
 
-###"What is it?"
+>Simpler.Data was factored out of [Simpler](https://github.com/gregoryjscott/Simpler). Simpler.Data is written with Simpler but the `Db` class can be used independently of Simpler.
 
-For the most part, Simpler is just a philosophy on .NET class design. All classes that contain functionality are defined as Tasks named as verbs. A Task has optional input and/or output, a single Execute() method, and possibly some sub-tasks - that's it.
+## API
 
-```c#
-public class Ask : Task
-{
-    // Inputs
-    public string Question { get; set; }
+To interact with a database you use the `Db` static class. `Db` exposes an API of 5 methods. Simpler.Data keeps it simple.
 
-    // Outputs
-    public string Answer { get; private set; }
+The API consists of a `Db.Connect` method for making connections and 4 different methods that run SQL and return results in different ways. All 4 methods for running SQL have the same parameter signature. You'll have the whole API memorized in no time.
 
-    public override void Execute()
-    {
-        Answer =
-            Question == "Is this cool?"
-                ? "Definitely."
-                : "Get a life.";
-    }
-}
-```
-    
-Simpler 2 adds some additional base classes, InTask, OutTask, and InOutTask, that allow for explicity defining the input and/or output of the Task.
+### Connecting to a Databaase
 
-```c#
-public class Ask : InOutTask<Ask.Input, Ask.Output>
-{
-    public class Input
-    {
-        public string Question { get; set; }
-    }
+`Db.Connect()` will create and return an open instance of `System.Data.IDbConnection` using the given connection name. Simpler will search the configuration file for a `connectionString` entry that matches the given connection name, and use it along with `System.Data.Common.DbProviderFactories` to create and open the connection.
 
-    public class Output
-    {
-        public string Answer { get; set; }
-    }
+>Use of `Db.Connect` is optional. The rest of the API methods take an `IDbConnection` as the first parameter so connections can come from anywhere.
 
-    public override void Execute()
-    {
-        Out.Answer =
-            In.Question == "Is this cool?"
-                ? "Definitely."
-                : "Get a life.";
-    }
-}
-```
+### Running SQL
 
-Input is available to the Execute() method by way of the In property, and output is set using the Out property. This eliminates the need to comment your input and output properties, and makes it easy to identify the input and output within the Execute() method since all input is wrapped by In, and all output is set on Out.
+`Db` contains 4 methods for running SQL and returning results. All 4 methods have the same parameter signature of `(IDbConnection connection, string sql, object values = null, int timeout = 30)`.
 
-###"How do I use it?"
+* `connection` - An open instance of `IDbConnection`
+* `sql` - The SQL statement to run
+* `values` - (Optional) An instance that contains property values that will used to create and set parameter values that are found in the `sql`
+* `timeout` - Time span in seconds before a timeout will occur
 
-First, you build a Task class. You then instantiate Tasks using the Task.New<T>() method.
+Choose methods to call based on how you want your results to be structured.
 
-Task.New<T>() appears to just return an instance of the given Task type. However, it actually returns a proxy to the Task. The proxy allows for intercepting Task Execute() calls to perform actions before and/or after the Task executes. Simpler uses this to automatically inject sub-task properties (only if null) before Task execution by way of the Simpler.EventsAttribute. Another common use of this functionality is to build a custom EventsAttribute to log task activity.
+### Db.Get<T>
 
-```c#
-public class LogAttribute : EventsAttribute
-{
-    public override void BeforeExecute(Task task)
-    {
-        Console.WriteLine(String.Format("{0} started.", task.Name));
-    }
-
-    public override void AfterExecute(Task task)
-    {
-        Console.WriteLine(String.Format("{0} finished.", task.Name));
-    }
-
-    public override void OnError(Task task, Exception exception)
-    {
-        Console.WriteLine(String.Format("{0} bombed; error message: {1}.", task.Name, exception.Message));
-    }
-}
-
-[Log]
-public class BeAnnoying : InTask<BeAnnoying.Input>
-{
-    public class Input
-    {
-        public int AnnoyanceLevel { get; set; }
-    }
-
-    public Ask Ask { get; set; }
-
-    public override void Execute()
-    {
-        // "BeAnnoying started." was logged to the console before Execute() began.
-
-        // Notice that Ask was automatically instantiated.
-        Ask.In.Question = "Is this cool?";
-
-        for (var i = 0; i < In.AnnoyanceLevel; i++)
-        {
-            Ask.Execute();
-        }
-
-        // "BeAnnoying finished." will be logged to the console after Execute() finishes.
-    }
-}
-
-public class Program
-{
-    Program()
-    {
-        var beAnnoying = Task.New<BeAnnoying>();
-        beAnnoying.In.AnnoyanceLevel = 10;
-        beAnnoying.Execute();
-    }
-}
-```
-
-That pretty much sums it up. You build task classes, you use Task.New<T> to create them, and you can use the power of the proxy to address cross cutting concerns like logging.
-
-###"What about database interaction?"
-
-Simpler provides a small set of Simpler.Data.Tasks classes that simplify interacting with System.Data.IDbCommand. Using SQL, Simpler makes it pretty easy to get data out of a database and into POCOs, or persist data from a POCO to a database.
-
-```c#
-public class Stuff
-{
-    public string Name { get; set; }
-}
-
-public class FetchCertainStuff : InOutTask<FetchCertainStuff.Input, FetchCertainStuff.Output>
-{
-    public class Input
-    {
-        public string SomeCriteria { get; set; }
-    }
-
-    public class Output
-    {
-        public Stuff[] Stuff { get; set; }
-    }
-
-    public BuildParameters BuildParameters { get; set; }
-    public FetchMany<Stuff> FetchStuff { get; set; }
-
-    public override void Execute()
-    {
-        using (var connection = new SqlConnection("MyConnectionString"))
-        using (var command = connection.CreateCommand())
-        {
-            connection.Open();
-            command.Connection = connection;
-            command.CommandText =
-                @"
-                select 
-                    AColumn as Name
-                from 
-                    ABunchOfJoinedTables
-                where 
-                    SomeColumn = @SomeCriteria
-                    and
-                    AnotherColumn = @SomeOtherCriteria
-                ";
-
-            BuildParameters.In.Command = command;
-            BuildParameters.In.Values = new {In.SomeCriteria, SomeOtherCriteria = "other criteria"};
-            BuildParameters.Execute();
-
-            FetchStuff.In.SelectCommand = command;
-            FetchStuff.Execute();
-            Out.Stuff = FetchStuff.Out.ObjectsFetched;
-        }
-    }
-}
-```
-
-Simpler 2 adds a new Simpler.Data.Db static class that eliminates most of the boilerplate code.
+`Db.Get<T>()` returns an array of `T` instances by using the given connection and SQL to query the database for rows of data. If `values` object is provided, it will search the SQL for parameters and use the properties on the `values` object to create and set the parameter values.
 
 ```c#
 public class FetchCertainStuff : InOutTask<FetchCertainStuff.Input, FetchCertainStuff.Output>
@@ -205,71 +62,43 @@ public class FetchCertainStuff : InOutTask<FetchCertainStuff.Input, FetchCertain
 
             var values = new {In.SomeCriteria, SomeOtherCriteria = "other criteria"};
 
-            Out.Stuff = Db.GetMany<Stuff>(connection, sql, values);
+            Out.Stuff = Db.Get<Stuff>(connection, sql, values);
         }
     }
 }
 ```
 
-The Db class also offers GetOne<T>(), GetResult() and GetScalar() methods. Simpler isn't a full-featured ORM, but for most scenarios it gets the job done.
+`T` can be `dynamic`, so `var unstructured = Db.Get<dynamic>(...)` can fetch unstructured data from a database.
 
-###"Is it easy to test?"
+### Db.Get
+
+The `Get()` provides the ability to retrieve multiple results sets with one call. It uses the given connection and SQL to query the database and returns an instance of the `Results` class. If `values` object is provided, it will search the SQL for parameters and use the properties on the `values` object to create and set the parameter values.
+
+The `Results` class has a `Read<T>()` method for retrieving results sets one at a time. The order of the `Read<T>()` calls is important - results must be read in the same order they are proved by the SQL. Example usage is below.
 
 ```c#
-[TestFixture]
-public class FetchCertainStuffTest
+using (var connection = new SqlConnection("MyConnectionString"))
 {
-    [Test]
-    public void should_return_9_pocos()
-    {
-        // Arrange
-        var task = TaskFactory<FetchCertainStuff>.Create();
-        task.In.SomeCriteria = "whatever";
-
-        // Act
-        task.Execute();
-
-        // Assert
-        Assert.That(task.Out.Stuff.Length, Is.EqualTo(9));
-    }
+    Results results = Db.Get(connection, "EXECUTE SelectPets");
+    Dog[] dogs = results.Read<Dog>();
+    Cat[] cats = results.Read<Cat>();
 }
 ```
 
-By design, all Tasks clearly define their inputs, outputs, and code to test, so tests are very straightforward.
+`Results.Read<T>()` support passing `dynamic` as `T`.
 
-A Task's dependencies are its inputs, outputs, and sub-tasks. The automatic sub-task injection provides the power to do testing by allowing for mocking sub-task behavior. This eliminates the need for repository nonsense when the only purpose is for testing.
+### Db.NonQuery
 
-###"I just need to get things done well, will Simpler help?"
+`Db.NonQuery()` uses the given connection to execute the given SQL on the database and returns an integer result (usually the number of rows affected). If `values` object is provided, it will search the SQL for parameters and use the properties on the `values` object to create and set the parameter values.
 
-Simpler is a tool for developing applications as sets of consistent, discrete, interchangable classes that aren't THINGS, but rather DO THINGS. Simpler works great in team environments because everybody is designing classes with the same termnilogy, and any class can easily integrate with another. 
+>This basically just wraps `IDbCommand.ExecuteNonQuery()`.
 
-Develpers don't waste time making decisions about class design. Need to fetch a list of contacts? Create classes called FetchContactsTest and FetchContact and get to work. That's Simpler. 
+### Db.Scalar
 
-###"How do I install it?"
+`Db.Scalar()` uses the given connection to execute the given SQL on the database and returns an object result. If `values` object is provided, it will search the SQL for parameters and use the properties on the `values` object to create and set the parameter values.
 
-Use Nuget. Simpler works with .NET 3.5 and above.
+>This basically just wraps `IDbCommand.ExecuteScalar()`.
 
-###"Is Simpler so simple it doesn't need documentation?"
+## TaskExtension
 
-Exactly. I seriously hope to create some proper documentation at some point, but the coding is so much more fun.
-
-###Acknowledgments
-
-The following have contributed in some way and/or have built something awesome with Simpler.
-
-- [bobnigh](https://github.com/bobnigh)
-- [Clancey](https://github.com/Clancey)
-- [corys](https://github.com/corys)
-- [Crosis](https://github.com/Crosis)
-- [danvanorden](https://github.com/danvanorden)
-- [dchristine](https://github.com/dchristine)
-- [jkettell](https://github.com/jkettell)
-- [JOrley](https://github.com/JOrley)
-- [jshoemaker](https://github.com/jshoemaker)
-- [ralreegorganon](https://github.com/ralreegorganon)
-- [rodel-rdi](https://github.com/rodel-rdi)
-- [sonhuilamson](https://github.com/sonhuilamson)
-- [timrisi](https://github.com/timrisi)
-
-###License
-Simpler is licensed under the MIT License. A copy of the MIT license can be found in the LICENSE file.
+TODO

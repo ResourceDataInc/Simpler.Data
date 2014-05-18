@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Simpler.Data</id>
+    <version>1.0.0</version>
+    <title>Simpler.Data</title>
+    <authors>Greg Scott</authors>
+    <owners>Resource Data, Inc.</owners>
+    <licenseUrl>https://github.com/ResourceDataInc/Simpler.Data/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ResourceDataInc/Simpler.Data</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simpler.Data is a simpler micro-ORM.</description>
+    <summary>Simpler.Data is a simpler micro-ORM that provides functionality for interacting with relational databases using SQL.</summary>
+    <releaseNotes>See the README for an overview of functionality.</releaseNotes>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Simpler" version="3.0.0" />
+      <dependency id="Castle.Core" version="2.5.2" />
+    </dependencies>
+  </metadata>
+</package>

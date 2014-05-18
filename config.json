@@ -1,27 +1,20 @@
 {
   "build": {
-    "solution": "api/Simpler.sln"
+    "solution": "api/Simpler.Data.sln"
   },
 
   "test": {
-    "dll": "api/Simpler.Tests/bin/Debug/Simpler.Tests.dll",
+    "dll": "api/Simpler.Data.Tests/bin/Debug/Simpler.Data.Tests.dll",
     "output": "output/test",
     "results": "output/test/results.xml"
   },
 
-  "bump": {
-    "files": [
-      "api/Simpler/Properties/AssemblyInfo.cs",
-      "api/Simpler/Simpler.nuspec"
-    ]
-  },
-
   "release": {
-    "nuspec": "api/Simpler/Simpler.nuspec",
-    "nupkgPattern": "Simpler.?.?.?.nupkg",
+    "nuspec": "api/Simpler.Data/Simpler.Data.nuspec",
+    "nupkgPattern": "Simpler.Data.?.?.?.nupkg",
     "lib": [
-      "api/Simpler/bin/Release/Simpler.dll",
-      "api/Simpler/bin/Release/Simpler.xml"
+      "api/Simpler.Data/bin/Release/Simpler.Data.dll",
+      "api/Simpler.Data/bin/Release/Simpler.Data.xml"
     ],
     "output": {
       "prep": "output/release/prep",
@@ -32,8 +25,8 @@
   "packages": {
     "configs": [
       "packages/packages.config",
-      "api/Simpler/packages.config",
-      "api/Simpler.Tests/packages.config"
+      "api/Simpler.Data/packages.config",
+      "api/Simpler.Data.Tests/packages.config"
     ]
   },
 

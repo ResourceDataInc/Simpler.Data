@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Simpler.Data.Tests/Data/ResultsTest.cs">
+    <Files>
+      <File FileName="Simpler.Data.Tests/Data/Tasks/BuildTypedTest.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Data/Tasks/BuildParametersTest.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Data/Tasks/BuildDynamicTest.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Mocks/MockEnum.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Mocks/MockPerson.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Mocks/MockComplexObject.cs" Line="1" Column="1" />
+      <File FileName="Simpler.Data.Tests/Data/ResultsTest.cs" Line="6" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
