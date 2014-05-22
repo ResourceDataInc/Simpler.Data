@@ -12,7 +12,7 @@ The API consists of a `Db.Connect` method for making connections and 4 different
 
 ### Connecting to a Databaase
 
-`Db.Connect()` will create and return an open instance of `System.Data.IDbConnection` using the given connection name. Simpler will search the configuration file for a `connectionString` entry that matches the given connection name, and use it along with `System.Data.Common.DbProviderFactories` to create and open the connection.
+`Db.Connect()` will create and return an open instance of `System.Data.IDbConnection` using `System.Data.Common.DbProviderFactories` and the given connection name. The application's configuration file must have a `connectionString` entry that matches the given connection name.
 
 >Use of `Db.Connect` is optional. The rest of the API methods take an `IDbConnection` as the first parameter so connections can come from anywhere.
 
@@ -25,9 +25,14 @@ The API consists of a `Db.Connect` method for making connections and 4 different
 * `values` - (Optional) An instance that contains property values that will used to create and set parameter values that are found in the `sql`
 * `timeout` - Time span in seconds before a timeout will occur
 
-Choose methods to call based on how you want your results to be structured.
+Choose the API method based on the kind of data you want returned from the database.
 
-### Db.Get<T>
+* `Stuff[] stuff = Db.Get<Stuff>(connection, sql)`
+* `Results multipleThings = Db.Get(connection, sql)`
+* `int rowsAffected = Db.NonQuery(connection, sql)`
+* `object result = Db.Scalar(connection, sql)`
+
+### Db.Get\<T\>
 
 `Db.Get<T>()` returns an array of `T` instances by using the given connection and SQL to query the database for rows of data. If `values` object is provided, it will search the SQL for parameters and use the properties on the `values` object to create and set the parameter values.
 
