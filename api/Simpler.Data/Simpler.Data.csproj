@@ -33,6 +33,7 @@
     <DocumentationFile>bin\Release\Simpler.Data.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\BuildDynamic.cs" />
     <Compile Include="Tasks\BuildObjects.cs" />
@@ -43,7 +44,9 @@
     <Compile Include="Results.cs" />
     <Compile Include="Sql\TaskExtensions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -53,18 +56,14 @@
   </Target>
   -->
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Simpler">
-      <HintPath>..\..\lib\Simpler.dll</HintPath>
+    <Reference Include="Simpler, Version=3.0.0.35222, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Simpler.3.0.0\lib\Simpler.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sql\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

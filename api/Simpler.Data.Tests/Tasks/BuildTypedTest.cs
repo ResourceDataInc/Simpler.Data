@@ -60,7 +60,7 @@ namespace Simpler.Data.Tests.Tasks
             task.In.DataRecord = mockDataRecord.Object;
 
             // Act & Assert
-            Assert.Throws(typeof(CheckException), task.Execute);
+            Assert.Throws(typeof(BuildTypedException), task.Execute);
         }
 
         [Test]

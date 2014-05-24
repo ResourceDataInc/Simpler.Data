@@ -58,7 +58,7 @@ namespace Simpler.Data.Tests
             results.Read<MockPerson>();
 
             // Act & Assert
-            Assert.Throws<CheckException>(() => results.Read<MockPerson>());
+            Assert.Throws<ResultsException>(() => results.Read<MockPerson>());
         }
 
         [Test]

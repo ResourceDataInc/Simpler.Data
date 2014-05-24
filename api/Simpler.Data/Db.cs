@@ -11,15 +11,21 @@ namespace Simpler.Data
         public static IDbConnection Connect(string connectionName)
         {
             var connectionConfig = ConfigurationManager.ConnectionStrings[connectionName];
-            Check.That(connectionConfig != null, "A connectionString with name {0} was not found in the configuration file.", connectionName);
+            if (connectionConfig == null) throw new ConnectException(String.Format(
+                "A connectionString with name {0} was not found in the configuration file.", 
+                connectionName
+            ));
 
             var connectionString = connectionConfig.ConnectionString;
             var providerName = connectionConfig.ProviderName;
             var provider = DbProviderFactories.GetFactory(providerName);
             
             var connection = provider.CreateConnection();
-            Check.That(connection != null, 
-                "Error while trying to create a DbProviderFactory connection using a connectionString setting with a name of {0}, with a provider type of {1}.", connectionName, providerName);
+            if (connection == null) throw new ConnectException(String.Format(
+                @"Error creating DbProviderFactory connection using a connectionString {0} with a provider type of {1}.",
+                connectionName,
+                providerName
+            ));
 
             connection.ConnectionString = connectionString;
             connection.Open();

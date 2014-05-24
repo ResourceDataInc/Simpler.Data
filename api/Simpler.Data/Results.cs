@@ -15,7 +15,7 @@ namespace Simpler.Data
 
         public T[] Read<T>()
         {
-            Check.That(Reader != null, "There are no more results.");
+            if (Reader == null) throw new ResultsException("There are no more results.");
 
             var buildObjects = Task.New<BuildObjects<T>>();
             buildObjects.In.Reader = Reader;
