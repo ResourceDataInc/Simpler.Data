@@ -1,9 +1,9 @@
 using NUnit.Framework;
 using Simpler;
-using Simpler.Data.Tests.Tasks;
 using Simpler.Data.Sql;
+using Easier.Tasks;
 
-namespace Simpler.Data.Tests
+namespace Easier.Sql
 {
     [TestFixture]
     public class TaskExtensionTest

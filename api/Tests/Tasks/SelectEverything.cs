@@ -1,4 +1,6 @@
-﻿namespace Simpler.Data.Tests.Tasks
+﻿using Simpler;
+
+namespace Easier.Tasks
 {
     public class SelectEverything : Task
     {
