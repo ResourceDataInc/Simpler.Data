@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
-using Simpler.Data.Tasks;
+using Easier.Tasks;
 using System.Data;
 using Moq;
+using Simpler;
 
-namespace Simpler.Data.Tests.Tasks
+namespace Easier.Tasks
 {   
     [TestFixture]
     public class BuildDynamicTest

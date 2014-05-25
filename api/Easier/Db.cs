@@ -2,9 +2,10 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using Simpler.Data.Tasks;
+using Easier.Tasks;
+using Simpler;
 
-namespace Simpler.Data
+namespace Easier
 {
     public static class Db
     {

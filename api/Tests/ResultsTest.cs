@@ -2,10 +2,10 @@
 using System.Data;
 using Moq;
 using NUnit.Framework;
-using Simpler.Data;
-using Simpler.Data.Tests.Mocks;
+using Easier;
+using Easier.Mocks;
 
-namespace Simpler.Data.Tests
+namespace Easier
 {
     [TestFixture]
     public class ResultsTest

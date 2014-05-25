@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
+using Simpler;
 
-namespace Simpler.Data.Tasks
+namespace Easier.Tasks
 {
     public class BuildDynamic : InOutTask<BuildDynamic.Input, BuildDynamic.Output> 
     {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using Simpler.Data.Tasks;
+using Easier.Tasks;
 using Moq;
 using System.Data;
-using Simpler.Data.Tests.Mocks;
+using Easier.Mocks;
+using Simpler;
 
-namespace Simpler.Data.Tests.Tasks
+namespace Easier.Tasks
 {
     [TestFixture]
     public class BuildObjectsTest

@@ -1,4 +1,4 @@
-﻿namespace Simpler.Data.Tests.Mocks
+﻿namespace Easier.Mocks
 {
     public enum MockEnum
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Simpler
+namespace Easier
 {
     public class BuildTypedException : Exception
     {

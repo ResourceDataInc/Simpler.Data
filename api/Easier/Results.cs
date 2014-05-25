@@ -1,8 +1,9 @@
 using System;
 using System.Data;
-using Simpler.Data.Tasks;
+using Simpler;
+using Easier.Tasks;
 
-namespace Simpler.Data
+namespace Easier
 {
     public class Results : IDisposable
     {

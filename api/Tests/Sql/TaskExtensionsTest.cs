@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using Simpler;
-using Simpler.Data.Sql;
+using Easier.Sql;
 using Easier.Tasks;
 
 namespace Easier.Sql

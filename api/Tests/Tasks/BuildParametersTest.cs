@@ -2,10 +2,11 @@
 using Moq;
 using NUnit.Framework;
 using System.Data;
-using Simpler.Data.Tasks;
-using Simpler.Data.Tests.Mocks;
+using Easier.Tasks;
+using Easier.Mocks;
+using Simpler;
 
-namespace Simpler.Data.Tests.Tasks
+namespace Easier.Tasks
 {
     [TestFixture]
     public class BuildParametersTest

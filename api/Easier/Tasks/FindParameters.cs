@@ -1,8 +1,9 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using Simpler;
 
-namespace Simpler.Data.Tasks
+namespace Easier.Tasks
 {
     public class FindParameters : InOutTask<FindParameters.Input, FindParameters.Output> 
     {

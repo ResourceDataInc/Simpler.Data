@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Simpler;
 
-namespace Simpler.Data.Tasks
+namespace Easier.Tasks
 {
     public class BuildObjects<T> : InOutTask<BuildObjects<T>.Input, BuildObjects<T>.Output>  
     {

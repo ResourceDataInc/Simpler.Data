@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Data;
+using Simpler;
 
-namespace Simpler.Data.Tasks
+namespace Easier.Tasks
 {
     public class BuildTyped<T> : InOutTask<BuildTyped<T>.Input, BuildTyped<T>.Output> 
     {

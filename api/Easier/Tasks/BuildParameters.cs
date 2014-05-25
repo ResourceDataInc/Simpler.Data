@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Reflection;
+using Simpler;
 
-namespace Simpler.Data.Tasks
+namespace Easier.Tasks
 {
     public class BuildParameters : InTask<BuildParameters.Input>
     {
