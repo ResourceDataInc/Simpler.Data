@@ -33,53 +33,7 @@ namespace Simpler.Data
             return connection;
         }
 
-        public static T[] Get<T>(IDbConnection connection, string sql, object values = null, int timeout = 30)
-        {
-            var results = Get(connection, sql, values, timeout);
-            return results.Read<T>();
-        }
-
         public static Results Get(IDbConnection connection, string sql, object values = null, int timeout = 30)
-        {
-            Results results = null;
-
-            ExecuteCommand(connection, sql, values, command => 
-            {
-                command.CommandTimeout = timeout;
-                var reader = command.ExecuteReader();
-                results = new Results(reader);
-            });
-
-            return results;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-        }
-
-        public static int NonQuery(IDbConnection connection, string sql, object values = null, int timeout = 30)
-        {
-            var result = default(int);
-
-            ExecuteCommand(connection, sql, values, command =>
-            {
-                command.CommandTimeout = timeout;
-                result = command.ExecuteNonQuery();
-            });
-
-            return result;
-        }
-
-        public static object Scalar(IDbConnection connection, string sql, object values = null, int timeout = 30)
-        {
-            var scalar = default(object);
-
-            ExecuteCommand(connection, sql, values, command =>
-            {
-                command.CommandTimeout = timeout;
-                scalar = command.ExecuteScalar();
-            });
-
-            return scalar;
-        }
-
-        static void ExecuteCommand(IDbConnection connection, string sql, object values, Action<IDbCommand> action)
         {
             using (var command = connection.CreateCommand())
             {
@@ -99,7 +53,9 @@ namespace Simpler.Data
                     buildParameters.Execute();
                 }
 
-                action(command);
+                command.CommandTimeout = timeout;
+                var reader = command.ExecuteReader();
+                return new Results(reader);
             }
         }
     }
