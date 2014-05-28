@@ -33,7 +33,7 @@ namespace Simpler.Data
             return connection;
         }
 
-        public static Results Get(IDbConnection connection, string sql, object values = null, int timeout = 30)
+        public static Results Run(IDbConnection connection, string sql, object values = null, int timeout = 30)
         {
             using (var command = connection.CreateCommand())
             {
